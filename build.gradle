@@ -1,0 +1,135 @@
+import org.gradle.plugins.signing.Sign
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
+apply plugin: 'checkstyle'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
+
+ext.seleniumVersion = '3.6.0'
+
+dependencies {
+    ['selenium-api', 'selenium-java', 'selenium-remote-driver', 'selenium-chrome-driver'].each {
+        compile "org.seleniumhq.selenium:$it:$seleniumVersion"
+    }
+
+    // for downloading files
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+group = 'de.dynamicfiles.projects.testing'
+archivesBaseName = 'headless-cr24'
+version = '1.0.0-SNAPSHOT'
+
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+// http://stackoverflow.com/a/22991189/1961102
+compileJava.dependsOn 'checkstyle'
+task checkstyle(type: Checkstyle) {
+    configFile file("${project.rootDir}/config/checkstyle/checkstyle.xml")
+    configProperties.checkstyleConfigDir = file("${project.rootDir}/config/checkstyle")
+    source 'src'
+    include '**/*.java'
+    classpath = files()
+}
+test {
+    testLogging.showStandardStreams = true
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
+signing {
+    required { isReleaseVersion }
+    sign configurations.archives
+}
+
+// read some information when required
+// https://docs.gradle.org/current/userguide/signing_plugin.html
+gradle.taskGraph.whenReady { taskGraph ->
+    if (taskGraph.allTasks.any { it instanceof Sign } && isReleaseVersion ) {
+        // Use Java 6's console to read from the console (no good for
+        // a CI environment)
+        Console console = System.console()
+        console.printf "\n\nWe have to sign some things in this build." +
+                       "\n\nPlease enter your signing details.\n\n"
+
+        def password = console.readPassword("PGP Private Key Password: ")
+
+        allprojects { ext."signing.password" = password }
+
+        console.printf "\nThanks.\n\n"
+    }
+}
+// http://stackoverflow.com/a/27741137/1961102
+if(!hasProperty('ossrhUsername')) {
+    ext.ossrhUsername = ''
+}
+if(!hasProperty('ossrhPassword')) {
+    ext.ossrhPassword = ''
+}
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            if(isReleaseVersion) {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            }
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'headless-cr24'
+                packaging 'jar'
+
+                description 'Automatically download required webdriver/browser for headless testing with Chrome/Chromium'
+                url 'https://github.com/FibreFoX/headless-cr24'
+
+                scm {
+                    connection 'scm:git:git://github.com/FibreFoX/headless-cr24.git'
+                    developerConnection 'scm:git:git@github.com:FibreFoX/headless-cr24.git'
+                    url 'https://github.com/FibreFoX/headless-cr24'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'FibreFoX'
+                        name 'Danny Althoff'
+                        email 'fibrefox@dynamicfiles.de'
+                    }
+                }
+            }
+        }
+    }
+}
