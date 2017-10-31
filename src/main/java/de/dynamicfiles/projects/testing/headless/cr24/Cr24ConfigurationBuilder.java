@@ -40,7 +40,7 @@ public class Cr24ConfigurationBuilder {
         configuration = cr24Configuration;
     }
 
-    public ChromeDriver build() throws IOException, ConfigurationBuilderException {
+    public ChromeDriver build() throws IOException, Cr24ConfigurationBuilderException {
         File localWebdriverArchiveFileToUse = new File(configuration.getWebdriverDownloadCachePathCallback().getValue());
         File localWebbrowserArchiveFileToUse = new File(configuration.getWebbrowserDownloadCachePathCallback().getValue());
 
@@ -92,7 +92,7 @@ public class Cr24ConfigurationBuilder {
 
         // fail if any attempt failed
         if( webdriverExecutable == null || webbrowserExecutable == null ){
-            throw new ConfigurationBuilderException("Not all executables are existing");
+            throw new Cr24ConfigurationBuilderException("Not all executables are existing");
         }
 
         if( configuration.isExistingSystemPropertyToBeRespected() ){

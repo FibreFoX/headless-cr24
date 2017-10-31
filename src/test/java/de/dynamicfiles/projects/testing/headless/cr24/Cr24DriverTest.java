@@ -29,7 +29,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class Cr24DriverTest {
 
 //    @Test
-    public void getWebdriverWithDefaultConfiguration() throws IOException, ConfigurationBuilderException {
+    public void getWebdriverWithDefaultConfiguration() throws IOException, Cr24ConfigurationBuilderException {
 
         ChromeDriver chromeDriver = Cr24DriverBuilder.getWebdriverWithDefaultConfiguration();
         chromeDriver.get("https://www.dynamicfiles.de");

@@ -20,9 +20,9 @@ package de.dynamicfiles.projects.testing.headless.cr24;
  *
  * @author Danny Althoff
  */
-public class ConfigurationBuilderException extends Exception {
+public class Cr24ConfigurationBuilderException extends Exception {
 
-    public ConfigurationBuilderException(String message) {
+    public Cr24ConfigurationBuilderException(String message) {
         super(message);
     }
 
