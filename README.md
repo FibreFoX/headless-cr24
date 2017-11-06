@@ -51,10 +51,14 @@ dependencies {
 **Step 2: create your WebDriver instance**
 
 ```java
-import org.openqa.selenium.WebDriver;
-import org.junit.Test;
-import de.dynamicfiles.projects.testing.headless.cr24.Cr24DriverBuilder;
+import java.io.IOException;
 
+import org.junit.Test;
+
+import org.openqa.selenium.WebDriver;
+
+import de.dynamicfiles.projects.testing.headless.cr24.Cr24DriverBuilder;
+import de.dynamicfiles.projects.testing.headless.cr24.Cr24ConfigurationBuilderException;
 
 public class YourWebbrowserTest {
 
