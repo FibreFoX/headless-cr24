@@ -118,6 +118,50 @@ public class Cr24Configuration {
         return chromeOptions;
     }
 
+    public void setConnectionTimeout(int connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+    }
+
+    public void setReadTimeout(int readTimeout) {
+        this.readTimeout = readTimeout;
+    }
+
+    public void setWebdriverVersionCallback(StringValueCallback webdriverVersionCallback) {
+        this.webdriverVersionCallback = webdriverVersionCallback;
+    }
+
+    public void setWebbrowserSnapshotVersionCallback(StringValueCallback webbrowserSnapshotVersionCallback) {
+        this.webbrowserSnapshotVersionCallback = webbrowserSnapshotVersionCallback;
+    }
+
+    public void setWebdriverDownloadUrlFilenameCallback(StringValueCallback webdriverDownloadUrlFilenameCallback) {
+        this.webdriverDownloadUrlFilenameCallback = webdriverDownloadUrlFilenameCallback;
+    }
+
+    public void setWebbrowserDownloadUrlFilenameCallback(StringValueCallback webbrowserDownloadUrlFilenameCallback) {
+        this.webbrowserDownloadUrlFilenameCallback = webbrowserDownloadUrlFilenameCallback;
+    }
+
+    public void setWebdriverDownloadUrlCallback(StringValueCallback webdriverDownloadUrlCallback) {
+        this.webdriverDownloadUrlCallback = webdriverDownloadUrlCallback;
+    }
+
+    public void setWebbrowserDownloadUrlCallback(StringValueCallback webbrowserDownloadUrlCallback) {
+        this.webbrowserDownloadUrlCallback = webbrowserDownloadUrlCallback;
+    }
+
+    public void setWebdriverDownloadCachePathCallback(StringValueCallback webdriverDownloadCachePathCallback) {
+        this.webdriverDownloadCachePathCallback = webdriverDownloadCachePathCallback;
+    }
+
+    public void setWebbrowserDownloadCachePathCallback(StringValueCallback webbrowserDownloadCachePathCallback) {
+        this.webbrowserDownloadCachePathCallback = webbrowserDownloadCachePathCallback;
+    }
+
+    public void setChromeOptions(ChromeOptions chromeOptions) {
+        this.chromeOptions = chromeOptions;
+    }
+
     public Cr24Configuration copy() {
         Cr24Configuration cr24Configuration = new Cr24Configuration();
 

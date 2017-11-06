@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.function.Function;
+import java.util.function.Consumer;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -76,7 +76,7 @@ public class Cr24ConfigurationBuilder {
         File webdriverExecutable = null;
         File webbrowserExecutable = null;
 
-        // TODO extract downloaded archives into temporary folder for execution
+        // extract downloaded archives into temporary folder for execution
         if( localWebdriverArchiveFileToUse.exists() ){
             // TODO handle deletion for later
             Path targetTempPath = Files.createTempDirectory("webdriver-");
@@ -111,13 +111,21 @@ public class Cr24ConfigurationBuilder {
         return new ChromeDriver(createDefaultService, options);
     }
 
-    public void customize(Function<Cr24Configuration, Cr24Configuration> configCallback) {
-        configuration = configCallback.apply(configuration.copy());
+    public Cr24ConfigurationBuilder customize(Consumer<Cr24Configuration> configCallback) {
+        Cr24ConfigurationBuilder newBuilder = new Cr24ConfigurationBuilder(configuration.copy());
+        configCallback.accept(newBuilder.configuration);
+        return newBuilder;
     }
 
     public Cr24ConfigurationBuilder offlineOnly() {
         Cr24ConfigurationBuilder newBuilder = new Cr24ConfigurationBuilder(configuration.copy());
         newBuilder.configuration.setOffline(true);
+        return newBuilder;
+    }
+
+    public Cr24ConfigurationBuilder online() {
+        Cr24ConfigurationBuilder newBuilder = new Cr24ConfigurationBuilder(configuration.copy());
+        newBuilder.configuration.setOffline(false);
         return newBuilder;
     }
 

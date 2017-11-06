@@ -30,6 +30,14 @@ public class Cr24DriverBuilder {
         return new Cr24ConfigurationBuilder(new Cr24Configuration());
     }
 
+    /**
+     * Create some ChromeDriver with internal default settings.
+     *
+     * @return
+     *
+     * @throws IOException
+     * @throws Cr24ConfigurationBuilderException
+     */
     public static ChromeDriver getWebdriverWithDefaultConfiguration() throws IOException, Cr24ConfigurationBuilderException {
         return getDefaultConfiguration().build();
     }

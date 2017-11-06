@@ -30,12 +30,17 @@ public class Cr24DriverTest {
 
 //    @Test
     public void getWebdriverWithDefaultConfiguration() throws IOException, Cr24ConfigurationBuilderException {
-
         ChromeDriver chromeDriver = Cr24DriverBuilder.getWebdriverWithDefaultConfiguration();
         chromeDriver.get("https://www.dynamicfiles.de");
         Files.copy(chromeDriver.getScreenshotAs(OutputType.FILE), new File("test.png"));
 
         chromeDriver.quit();
+    }
+
+    public void example() throws IOException, Cr24ConfigurationBuilderException {
+        Cr24DriverBuilder.getDefaultConfiguration().customize(config -> {
+            config.set64bit(true);
+        }).build();
     }
 
 }
