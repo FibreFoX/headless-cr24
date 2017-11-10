@@ -43,7 +43,7 @@ public final class Cr24Configuration {
     private StringValueCallback os = () -> "win";
 
     private StringValueCallback webdriverVersionCallback = () -> "2.33";
-    private StringValueCallback webbrowserSnapshotVersionCallback = () -> "515663";
+    private StringValueCallback webbrowserSnapshotVersionCallback = () -> "515682";
 
     private StringValueCallback webdriverDownloadUrlFilenameCallback = () -> "chromedriver_win32.zip";
     private StringValueCallback webbrowserDownloadUrlFilenameCallback = () -> "chrome-win32.zip";
