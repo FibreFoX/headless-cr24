@@ -43,7 +43,7 @@ public final class Cr24Configuration {
     private StringValueCallback os = () -> "win";
 
     private StringValueCallback webdriverVersionCallback = () -> "2.33";
-    private StringValueCallback webbrowserSnapshotVersionCallback = () -> "515682";
+    private StringValueCallback webbrowserSnapshotVersionCallback = () -> "515679";
 
     private StringValueCallback webdriverDownloadUrlFilenameCallback = () -> "chromedriver_win32.zip";
     private StringValueCallback webbrowserDownloadUrlFilenameCallback = () -> "chrome-win32.zip";
@@ -136,6 +136,11 @@ public final class Cr24Configuration {
 
     public void useBinariesForWindows() {
         os = () -> "win";
+        if( use64bit ){
+            webbrowserSnapshotVersionCallback = () -> "515679";
+        } else {
+            webbrowserSnapshotVersionCallback = () -> "515682";
+        }
         webdriverDownloadUrlFilenameCallback = () -> "chromedriver_win32.zip";
         webbrowserDownloadUrlFilenameCallback = () -> "chrome-win32.zip";
         webbrowserDownloadUrlCallback = () -> "https://commondatastorage.googleapis.com/chromium-browser-snapshots/Win" + (use64bit ? "_x64" : "") + "/" + webbrowserSnapshotVersionCallback.getValue() + "/" + webbrowserDownloadUrlFilenameCallback.getValue();
@@ -144,8 +149,10 @@ public final class Cr24Configuration {
     public void useBinariesForLinux() {
         os = () -> "linux";
         webdriverDownloadUrlFilenameCallback = () -> (use64bit ? "chromedriver_linux64.zip" : "chromedriver_linux32.zip");
-        if( !use64bit ){
+        if( use64bit ){
             // 32bit versions seems to not getting updated anymore, this is the last existing
+            webbrowserSnapshotVersionCallback = () -> "515696";
+        } else {
             webbrowserSnapshotVersionCallback = () -> "382086";
         }
         webbrowserDownloadUrlFilenameCallback = () -> "chrome-linux.zip";
@@ -155,7 +162,7 @@ public final class Cr24Configuration {
     public void useBinariesForMacOS() {
         os = () -> "mac";
         webdriverDownloadUrlFilenameCallback = () -> "chromedriver_mac64.zip";
-        webbrowserSnapshotVersionCallback = () -> "515663";
+        webbrowserSnapshotVersionCallback = () -> "515682";
         webbrowserDownloadUrlFilenameCallback = () -> "chrome-mac.zip";
         webbrowserDownloadUrlCallback = () -> "https://commondatastorage.googleapis.com/chromium-browser-snapshots/Mac" + "/" + webbrowserSnapshotVersionCallback.getValue() + "/" + webbrowserDownloadUrlFilenameCallback.getValue();
     }
@@ -194,6 +201,10 @@ public final class Cr24Configuration {
 
     public void setChromeOptions(ChromeOptions chromeOptions) {
         this.chromeOptions = chromeOptions;
+    }
+
+    public String getOS() {
+        return os.getValue();
     }
 
     public Cr24Configuration copy() {
