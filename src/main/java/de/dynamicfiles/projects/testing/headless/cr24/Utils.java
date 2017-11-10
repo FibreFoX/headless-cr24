@@ -36,7 +36,7 @@ import org.apache.commons.io.FileUtils;
  *
  * @author Danny Althoff
  */
-public class Utils {
+class Utils {
 
     public void download(String source, File target, int connectionTimeout, int readTimeout) throws IOException, MalformedURLException {
         URL sourceUrl = new URL(source);

@@ -22,7 +22,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
  *
  * @author Danny Althoff
  */
-public class Cr24Configuration {
+public final class Cr24Configuration {
 
     @FunctionalInterface
     public interface StringValueCallback {
@@ -38,10 +38,12 @@ public class Cr24Configuration {
     private int connectionTimeout = 15;
     private int readTimeout = 30;
 
-    private boolean use64bit = false;
+    private boolean use64bit = true;
+
+    private StringValueCallback os = () -> "win";
 
     private StringValueCallback webdriverVersionCallback = () -> "2.33";
-    private StringValueCallback webbrowserSnapshotVersionCallback = () -> "512476";
+    private StringValueCallback webbrowserSnapshotVersionCallback = () -> "515663";
 
     private StringValueCallback webdriverDownloadUrlFilenameCallback = () -> "chromedriver_win32.zip";
     private StringValueCallback webbrowserDownloadUrlFilenameCallback = () -> "chrome-win32.zip";
@@ -49,13 +51,19 @@ public class Cr24Configuration {
     private StringValueCallback webdriverDownloadUrlCallback = () -> "https://chromedriver.storage.googleapis.com/" + webdriverVersionCallback.getValue() + "/" + webdriverDownloadUrlFilenameCallback.getValue();
     private StringValueCallback webbrowserDownloadUrlCallback = () -> "https://commondatastorage.googleapis.com/chromium-browser-snapshots/Win" + (use64bit ? "_x64" : "") + "/" + webbrowserSnapshotVersionCallback.getValue() + "/" + webbrowserDownloadUrlFilenameCallback.getValue();
 
-    private StringValueCallback webdriverDownloadCachePathCallback = () -> System.getProperty("user.home") + "/.testing/webdriver/chromedriver/" + webdriverVersionCallback.getValue() + "/" + webdriverDownloadUrlFilenameCallback.getValue();
-    private StringValueCallback webbrowserDownloadCachePathCallback = () -> System.getProperty("user.home") + "/.testing/browser/chromium/" + webbrowserSnapshotVersionCallback.getValue() + "/" + (use64bit ? "64bit" : "32bit") + webbrowserDownloadUrlFilenameCallback.getValue();
+    private StringValueCallback webdriverDownloadCachePathCallback = () -> System.getProperty("user.home") + "/.testing/webdriver/chromedriver/" + os.getValue() + "/" + webdriverVersionCallback.getValue() + "/" + (use64bit ? "64bit" : "32bit") + "/" + webdriverDownloadUrlFilenameCallback.getValue();
+    private StringValueCallback webbrowserDownloadCachePathCallback = () -> System.getProperty("user.home") + "/.testing/browser/chromium/" + os.getValue() + "/" + webbrowserSnapshotVersionCallback.getValue() + "/" + (use64bit ? "64bit" : "32bit") + "/" + webbrowserDownloadUrlFilenameCallback.getValue();
 
     private ChromeOptions chromeOptions = new ChromeOptions();
 
     public Cr24Configuration() {
         chromeOptions.setHeadless(true);
+        if( System.getProperty("os.name").toLowerCase().startsWith("linux") ){
+            useBinariesForLinux();
+        }
+        if( System.getProperty("os.name").toLowerCase().contains("os x") ){
+            useBinariesForMacOS();
+        }
     }
 
     public boolean isOffline() {
@@ -124,6 +132,32 @@ public class Cr24Configuration {
 
     public void setReadTimeout(int readTimeout) {
         this.readTimeout = readTimeout;
+    }
+
+    public void useBinariesForWindows() {
+        os = () -> "win";
+        webdriverDownloadUrlFilenameCallback = () -> "chromedriver_win32.zip";
+        webbrowserDownloadUrlFilenameCallback = () -> "chrome-win32.zip";
+        webbrowserDownloadUrlCallback = () -> "https://commondatastorage.googleapis.com/chromium-browser-snapshots/Win" + (use64bit ? "_x64" : "") + "/" + webbrowserSnapshotVersionCallback.getValue() + "/" + webbrowserDownloadUrlFilenameCallback.getValue();
+    }
+
+    public void useBinariesForLinux() {
+        os = () -> "linux";
+        webdriverDownloadUrlFilenameCallback = () -> (use64bit ? "chromedriver_linux64.zip" : "chromedriver_linux32.zip");
+        if( !use64bit ){
+            // 32bit versions seems to not getting updated anymore, this is the last existing
+            webbrowserSnapshotVersionCallback = () -> "382086";
+        }
+        webbrowserDownloadUrlFilenameCallback = () -> "chrome-linux.zip";
+        webbrowserDownloadUrlCallback = () -> "https://commondatastorage.googleapis.com/chromium-browser-snapshots/Linux" + (use64bit ? "_x64" : "") + "/" + webbrowserSnapshotVersionCallback.getValue() + "/" + webbrowserDownloadUrlFilenameCallback.getValue();
+    }
+
+    public void useBinariesForMacOS() {
+        os = () -> "mac";
+        webdriverDownloadUrlFilenameCallback = () -> "chromedriver_mac64.zip";
+        webbrowserSnapshotVersionCallback = () -> "515663";
+        webbrowserDownloadUrlFilenameCallback = () -> "chrome-mac.zip";
+        webbrowserDownloadUrlCallback = () -> "https://commondatastorage.googleapis.com/chromium-browser-snapshots/Mac" + "/" + webbrowserSnapshotVersionCallback.getValue() + "/" + webbrowserDownloadUrlFilenameCallback.getValue();
     }
 
     public void setWebdriverVersionCallback(StringValueCallback webdriverVersionCallback) {
