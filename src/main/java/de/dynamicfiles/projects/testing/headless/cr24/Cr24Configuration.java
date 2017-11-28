@@ -166,6 +166,12 @@ public final class Cr24Configuration {
         webdriverDownloadUrlFilenameCallback = () -> "chromedriver_win32.zip";
         webbrowserDownloadUrlFilenameCallback = () -> "chrome-win32.zip";
         webbrowserDownloadUrlCallback = () -> "https://commondatastorage.googleapis.com/chromium-browser-snapshots/Win" + (use64bit ? "_x64" : "") + "/" + webbrowserSnapshotVersionCallback.getValue() + "/" + webbrowserDownloadUrlFilenameCallback.getValue();
+
+        webdriverExecutableFilename = () -> "chromedriver.exe";
+        webbrowserExecutableFilename = () -> "chrome.exe";
+
+        webdriverArchiveFoldernameOfExecutable = () -> "/";
+        webbrowserArchiveFoldernameOfExecutable = () -> "/chrome-win32";
     }
 
     public void useBinariesForLinux() {
@@ -179,6 +185,12 @@ public final class Cr24Configuration {
         }
         webbrowserDownloadUrlFilenameCallback = () -> "chrome-linux.zip";
         webbrowserDownloadUrlCallback = () -> "https://commondatastorage.googleapis.com/chromium-browser-snapshots/Linux" + (use64bit ? "_x64" : "") + "/" + webbrowserSnapshotVersionCallback.getValue() + "/" + webbrowserDownloadUrlFilenameCallback.getValue();
+
+        webdriverExecutableFilename = () -> "chromedriver";
+        webbrowserExecutableFilename = () -> "chrome";
+
+        webdriverArchiveFoldernameOfExecutable = () -> "/";
+        webbrowserArchiveFoldernameOfExecutable = () -> "/chrome-linux";
     }
 
     public void useBinariesForMacOS() {
@@ -187,6 +199,12 @@ public final class Cr24Configuration {
         webbrowserSnapshotVersionCallback = () -> "515682";
         webbrowserDownloadUrlFilenameCallback = () -> "chrome-mac.zip";
         webbrowserDownloadUrlCallback = () -> "https://commondatastorage.googleapis.com/chromium-browser-snapshots/Mac" + "/" + webbrowserSnapshotVersionCallback.getValue() + "/" + webbrowserDownloadUrlFilenameCallback.getValue();
+
+        webdriverExecutableFilename = () -> "chromedriver";
+        webbrowserExecutableFilename = () -> "Chromium.app/Contents/MacOS/Chromium";
+
+        webdriverArchiveFoldernameOfExecutable = () -> "/";
+        webbrowserArchiveFoldernameOfExecutable = () -> "/chrome-mac";
     }
 
     public void setWebdriverVersionCallback(StringValueCallback webdriverVersionCallback) {
