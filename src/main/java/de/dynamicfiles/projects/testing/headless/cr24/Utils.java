@@ -16,10 +16,9 @@
 package de.dynamicfiles.projects.testing.headless.cr24;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
@@ -30,7 +29,12 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.logging.Logger;
-import org.apache.commons.io.FileUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 /**
  *
@@ -38,10 +42,19 @@ import org.apache.commons.io.FileUtils;
  */
 class Utils {
 
-    public void download(String source, File target, int connectionTimeout, int readTimeout) throws IOException, MalformedURLException {
-        URL sourceUrl = new URL(source);
+    public void download(String source, File target, int connectionTimeout, int readTimeout) throws IOException {
+        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(connectionTimeout).setConnectionRequestTimeout(readTimeout).build();
+        CloseableHttpClient client = HttpClientBuilder.create().useSystemProperties().setDefaultRequestConfig(requestConfig).build();
+
         Files.createDirectories(target.toPath().getParent());
-        FileUtils.copyURLToFile(sourceUrl, target, connectionTimeout * 1000, readTimeout * 1000);
+        try(CloseableHttpResponse response = client.execute(new HttpGet(source))){
+            HttpEntity entity = response.getEntity();
+            if( entity != null ){
+                try(FileOutputStream outstream = new FileOutputStream(target)){
+                    entity.writeTo(outstream);
+                }
+            }
+        }
     }
 
     public void unarchive(Path sourceArchive, String rootInsideArchive, Path target) throws IOException {
