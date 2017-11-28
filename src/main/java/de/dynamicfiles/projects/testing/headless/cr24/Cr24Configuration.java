@@ -48,6 +48,12 @@ public final class Cr24Configuration {
     private StringValueCallback webdriverDownloadUrlFilenameCallback = () -> "chromedriver_win32.zip";
     private StringValueCallback webbrowserDownloadUrlFilenameCallback = () -> "chrome-win32.zip";
 
+    private StringValueCallback webdriverExecutableFilename = () -> "chromedriver.exe";
+    private StringValueCallback webbrowserExecutableFilename = () -> "chrome.exe";
+
+    private StringValueCallback webdriverArchiveFoldernameOfExecutable = () -> "/";
+    private StringValueCallback webbrowserArchiveFoldernameOfExecutable = () -> "/chrome-win32";
+
     private StringValueCallback webdriverDownloadUrlCallback = () -> "https://chromedriver.storage.googleapis.com/" + webdriverVersionCallback.getValue() + "/" + webdriverDownloadUrlFilenameCallback.getValue();
     private StringValueCallback webbrowserDownloadUrlCallback = () -> "https://commondatastorage.googleapis.com/chromium-browser-snapshots/Win" + (use64bit ? "_x64" : "") + "/" + webbrowserSnapshotVersionCallback.getValue() + "/" + webbrowserDownloadUrlFilenameCallback.getValue();
 
@@ -104,6 +110,22 @@ public final class Cr24Configuration {
 
     public StringValueCallback getWebdriverVersionCallback() {
         return webdriverVersionCallback;
+    }
+
+    public StringValueCallback getWebdriverExecutableFilename() {
+        return webdriverExecutableFilename;
+    }
+
+    public StringValueCallback getWebbrowserExecutableFilename() {
+        return webbrowserExecutableFilename;
+    }
+
+    public StringValueCallback getWebdriverArchiveFoldernameOfExecutable() {
+        return webdriverArchiveFoldernameOfExecutable;
+    }
+
+    public StringValueCallback getWebbrowserArchiveFoldernameOfExecutable() {
+        return webbrowserArchiveFoldernameOfExecutable;
     }
 
     public StringValueCallback getWebdriverDownloadUrlCallback() {
@@ -181,6 +203,22 @@ public final class Cr24Configuration {
 
     public void setWebbrowserDownloadUrlFilenameCallback(StringValueCallback webbrowserDownloadUrlFilenameCallback) {
         this.webbrowserDownloadUrlFilenameCallback = webbrowserDownloadUrlFilenameCallback;
+    }
+
+    public void setWebdriverExecutableFilename(StringValueCallback webdriverExecutableFilename) {
+        this.webdriverExecutableFilename = webdriverExecutableFilename;
+    }
+
+    public void setWebbrowserExecutableFilename(StringValueCallback webbrowserExecutableFilename) {
+        this.webbrowserExecutableFilename = webbrowserExecutableFilename;
+    }
+
+    public void setWebdriverArchiveFoldernameOfExecutable(StringValueCallback webdriverArchiveFoldernameOfExecutable) {
+        this.webdriverArchiveFoldernameOfExecutable = webdriverArchiveFoldernameOfExecutable;
+    }
+
+    public void setWebbrowserArchiveFoldernameOfExecutable(StringValueCallback webbrowserArchiveFoldernameOfExecutable) {
+        this.webbrowserArchiveFoldernameOfExecutable = webbrowserArchiveFoldernameOfExecutable;
     }
 
     public void setWebdriverDownloadUrlCallback(StringValueCallback webdriverDownloadUrlCallback) {

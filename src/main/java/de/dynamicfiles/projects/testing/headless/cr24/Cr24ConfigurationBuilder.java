@@ -80,14 +80,14 @@ public class Cr24ConfigurationBuilder {
         if( localWebdriverArchiveFileToUse.exists() ){
             // TODO handle deletion for later
             Path targetTempPath = Files.createTempDirectory("webdriver-");
-            utils.unarchive(localWebdriverArchiveFileToUse.toPath(), "/", targetTempPath);
-            webdriverExecutable = targetTempPath.resolve("chromedriver.exe").toAbsolutePath().toFile();
+            utils.unarchive(localWebdriverArchiveFileToUse.toPath(), configuration.getWebdriverArchiveFoldernameOfExecutable().getValue(), targetTempPath);
+            webdriverExecutable = targetTempPath.resolve(configuration.getWebdriverExecutableFilename().getValue()).toAbsolutePath().toFile();
         }
         if( localWebbrowserArchiveFileToUse.exists() ){
             // TODO handle deletion for later
             Path targetTempPath = Files.createTempDirectory("webbrowser-");
-            utils.unarchive(localWebbrowserArchiveFileToUse.toPath(), "/chrome-win32", targetTempPath);
-            webbrowserExecutable = targetTempPath.resolve("chrome.exe").toAbsolutePath().toFile();
+            utils.unarchive(localWebbrowserArchiveFileToUse.toPath(), configuration.getWebbrowserArchiveFoldernameOfExecutable().getValue(), targetTempPath);
+            webbrowserExecutable = targetTempPath.resolve(configuration.getWebbrowserExecutableFilename().getValue()).toAbsolutePath().toFile();
         }
 
         // fail if any attempt failed
