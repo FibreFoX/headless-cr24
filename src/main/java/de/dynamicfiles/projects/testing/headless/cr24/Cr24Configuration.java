@@ -35,8 +35,8 @@ public final class Cr24Configuration {
     private boolean respectExistingSystemProperty = true;
     private boolean useLocalCache = true;
 
-    private int connectionTimeout = 15;
-    private int readTimeout = 30;
+    private int connectionTimeout = 15 * 1000;
+    private int readTimeout = 30 * 1000;
 
     private boolean use64bit = true;
 
