@@ -98,6 +98,7 @@ public class Cr24ConfigurationBuilder {
         if( configuration.isExistingSystemPropertyToBeRespected() ){
             if( System.getProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, null) == null ){
                 System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, webdriverExecutable.getAbsolutePath());
+                configuration.getWebdriverExecutableCallback().workOnExecutable(webdriverExecutable.toPath());
             }
         } else {
             System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, webdriverExecutable.getAbsolutePath());
@@ -106,6 +107,7 @@ public class Cr24ConfigurationBuilder {
         ChromeOptions options = configuration.getChromeOptions();
 
         options.setBinary(webbrowserExecutable.getAbsolutePath());
+        configuration.getWebbrowserExecutableCallback().workOnExecutable(webbrowserExecutable.toPath());
 
         ChromeDriverService createDefaultService = ChromeDriverService.createDefaultService();
         return new ChromeDriver(createDefaultService, options);

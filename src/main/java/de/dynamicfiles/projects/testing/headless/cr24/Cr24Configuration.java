@@ -15,6 +15,12 @@
  */
 package de.dynamicfiles.projects.testing.headless.cr24;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.HashSet;
+import java.util.Set;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 /**
@@ -29,6 +35,12 @@ public final class Cr24Configuration {
 
         String getValue();
 
+    }
+
+    @FunctionalInterface
+    public interface ExecutableCallback {
+
+        void workOnExecutable(Path executable);
     }
 
     private boolean offline = false;
@@ -59,6 +71,11 @@ public final class Cr24Configuration {
 
     private StringValueCallback webdriverDownloadCachePathCallback = () -> System.getProperty("user.home") + "/.testing/webdriver/chromedriver/" + os.getValue() + "/" + webdriverVersionCallback.getValue() + "/" + (use64bit ? "64bit" : "32bit") + "/" + webdriverDownloadUrlFilenameCallback.getValue();
     private StringValueCallback webbrowserDownloadCachePathCallback = () -> System.getProperty("user.home") + "/.testing/browser/chromium/" + os.getValue() + "/" + webbrowserSnapshotVersionCallback.getValue() + "/" + (use64bit ? "64bit" : "32bit") + "/" + webbrowserDownloadUrlFilenameCallback.getValue();
+
+    private ExecutableCallback webdriverExecutableCallback = (Path file) -> {
+    };
+    private ExecutableCallback webbrowserExecutableCallback = (Path file) -> {
+    };
 
     private ChromeOptions chromeOptions = new ChromeOptions();
 
@@ -172,6 +189,11 @@ public final class Cr24Configuration {
 
         webdriverArchiveFoldernameOfExecutable = () -> "/";
         webbrowserArchiveFoldernameOfExecutable = () -> "/chrome-win32";
+
+        webdriverExecutableCallback = (Path file) -> {
+        };
+        webbrowserExecutableCallback = (Path file) -> {
+        };
     }
 
     public void useBinariesForLinux() {
@@ -191,6 +213,51 @@ public final class Cr24Configuration {
 
         webdriverArchiveFoldernameOfExecutable = () -> "/";
         webbrowserArchiveFoldernameOfExecutable = () -> "/chrome-linux";
+
+        webdriverExecutableCallback = (Path file) -> {
+            if( file.toFile().exists() ){
+                try{
+                    //using PosixFilePermission to set file permissions 777
+                    Set<PosixFilePermission> perms = new HashSet<>();
+                    //add owners permission
+                    perms.add(PosixFilePermission.OWNER_READ);
+                    perms.add(PosixFilePermission.OWNER_WRITE);
+                    perms.add(PosixFilePermission.OWNER_EXECUTE);
+                    //add group permissions
+                    perms.add(PosixFilePermission.GROUP_READ);
+                    perms.add(PosixFilePermission.GROUP_WRITE);
+                    perms.add(PosixFilePermission.GROUP_EXECUTE);
+                    //add others permissions
+                    perms.add(PosixFilePermission.OTHERS_READ);
+                    perms.add(PosixFilePermission.OTHERS_EXECUTE);
+                    Files.setPosixFilePermissions(file, perms);
+                } catch(UnsupportedOperationException | IOException ioex){
+                    // NO-OP
+                }
+            }
+        };
+        webbrowserExecutableCallback = (Path file) -> {
+            if( file.toFile().exists() ){
+                try{
+                    //using PosixFilePermission to set file permissions 777
+                    Set<PosixFilePermission> perms = new HashSet<>();
+                    //add owners permission
+                    perms.add(PosixFilePermission.OWNER_READ);
+                    perms.add(PosixFilePermission.OWNER_WRITE);
+                    perms.add(PosixFilePermission.OWNER_EXECUTE);
+                    //add group permissions
+                    perms.add(PosixFilePermission.GROUP_READ);
+                    perms.add(PosixFilePermission.GROUP_WRITE);
+                    perms.add(PosixFilePermission.GROUP_EXECUTE);
+                    //add others permissions
+                    perms.add(PosixFilePermission.OTHERS_READ);
+                    perms.add(PosixFilePermission.OTHERS_EXECUTE);
+                    Files.setPosixFilePermissions(file, perms);
+                } catch(UnsupportedOperationException | IOException ioex){
+                    // NO-OP
+                }
+            }
+        };
     }
 
     public void useBinariesForMacOS() {
@@ -205,6 +272,51 @@ public final class Cr24Configuration {
 
         webdriverArchiveFoldernameOfExecutable = () -> "/";
         webbrowserArchiveFoldernameOfExecutable = () -> "/chrome-mac";
+
+        webdriverExecutableCallback = (Path file) -> {
+            if( file.toFile().exists() ){
+                try{
+                    //using PosixFilePermission to set file permissions 777
+                    Set<PosixFilePermission> perms = new HashSet<>();
+                    //add owners permission
+                    perms.add(PosixFilePermission.OWNER_READ);
+                    perms.add(PosixFilePermission.OWNER_WRITE);
+                    perms.add(PosixFilePermission.OWNER_EXECUTE);
+                    //add group permissions
+                    perms.add(PosixFilePermission.GROUP_READ);
+                    perms.add(PosixFilePermission.GROUP_WRITE);
+                    perms.add(PosixFilePermission.GROUP_EXECUTE);
+                    //add others permissions
+                    perms.add(PosixFilePermission.OTHERS_READ);
+                    perms.add(PosixFilePermission.OTHERS_EXECUTE);
+                    Files.setPosixFilePermissions(file, perms);
+                } catch(UnsupportedOperationException | IOException ioex){
+                    // NO-OP
+                }
+            }
+        };
+        webbrowserExecutableCallback = (Path file) -> {
+            if( file.toFile().exists() ){
+                try{
+                    //using PosixFilePermission to set file permissions 777
+                    Set<PosixFilePermission> perms = new HashSet<>();
+                    //add owners permission
+                    perms.add(PosixFilePermission.OWNER_READ);
+                    perms.add(PosixFilePermission.OWNER_WRITE);
+                    perms.add(PosixFilePermission.OWNER_EXECUTE);
+                    //add group permissions
+                    perms.add(PosixFilePermission.GROUP_READ);
+                    perms.add(PosixFilePermission.GROUP_WRITE);
+                    perms.add(PosixFilePermission.GROUP_EXECUTE);
+                    //add others permissions
+                    perms.add(PosixFilePermission.OTHERS_READ);
+                    perms.add(PosixFilePermission.OTHERS_EXECUTE);
+                    Files.setPosixFilePermissions(file, perms);
+                } catch(UnsupportedOperationException | IOException ioex){
+                    // NO-OP
+                }
+            }
+        };
     }
 
     public void setWebdriverVersionCallback(StringValueCallback webdriverVersionCallback) {
@@ -263,6 +375,14 @@ public final class Cr24Configuration {
         return os.getValue();
     }
 
+    public ExecutableCallback getWebbrowserExecutableCallback() {
+        return webbrowserExecutableCallback;
+    }
+
+    public ExecutableCallback getWebdriverExecutableCallback() {
+        return webdriverExecutableCallback;
+    }
+
     public Cr24Configuration copy() {
         Cr24Configuration cr24Configuration = new Cr24Configuration();
 
@@ -283,6 +403,10 @@ public final class Cr24Configuration {
         cr24Configuration.webbrowserDownloadUrlCallback = this.webbrowserDownloadUrlCallback;
         cr24Configuration.webdriverDownloadCachePathCallback = this.webdriverDownloadCachePathCallback;
         cr24Configuration.webbrowserDownloadCachePathCallback = this.webbrowserDownloadCachePathCallback;
+        cr24Configuration.webdriverExecutableCallback = this.webdriverExecutableCallback;
+        cr24Configuration.webbrowserExecutableCallback = this.webbrowserExecutableCallback;
+        
+        cr24Configuration.os = this.os;
 
         cr24Configuration.chromeOptions = this.chromeOptions;
 
