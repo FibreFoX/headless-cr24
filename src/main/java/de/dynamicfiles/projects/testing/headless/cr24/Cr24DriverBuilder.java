@@ -30,6 +30,12 @@ public class Cr24DriverBuilder {
         return new Cr24ConfigurationBuilder(new Cr24Configuration());
     }
 
+    public static Cr24ConfigurationBuilder getDefaultLocalBrowserConfiguration() {
+        Cr24Configuration cr24Configuration = new Cr24Configuration();
+        cr24Configuration.setUseLocalBrowserInstallation(true);
+        return new Cr24ConfigurationBuilder(cr24Configuration);
+    }
+
     /**
      * Create some ChromeDriver with internal default settings.
      *

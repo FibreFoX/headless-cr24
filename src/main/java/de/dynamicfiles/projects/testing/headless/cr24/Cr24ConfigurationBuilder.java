@@ -63,7 +63,7 @@ public class Cr24ConfigurationBuilder {
             }
         }
         // download webdriver if needed
-        if( !hasLocalVersionWebbrowserArchive ){
+        if( !configuration.isUseLocalBrowserInstallation() && !hasLocalVersionWebbrowserArchive ){
             if( !configuration.isOffline() ){
                 try{
                     utils.download(configuration.getWebbrowserDownloadUrlCallback().getValue(), localWebbrowserArchiveFileToUse, configuration.getConnectionTimeout(), configuration.getReadTimeout());
@@ -83,7 +83,7 @@ public class Cr24ConfigurationBuilder {
             utils.unarchive(localWebdriverArchiveFileToUse.toPath(), configuration.getWebdriverArchiveFoldernameOfExecutable().getValue(), targetTempPath);
             webdriverExecutable = targetTempPath.resolve(configuration.getWebdriverExecutableFilename().getValue()).toAbsolutePath().toFile();
         }
-        if( localWebbrowserArchiveFileToUse.exists() ){
+        if( !configuration.isUseLocalBrowserInstallation() && localWebbrowserArchiveFileToUse.exists() ){
             // TODO handle deletion for later
             Path targetTempPath = Files.createTempDirectory("webbrowser-");
             utils.unarchive(localWebbrowserArchiveFileToUse.toPath(), configuration.getWebbrowserArchiveFoldernameOfExecutable().getValue(), targetTempPath);
@@ -106,8 +106,11 @@ public class Cr24ConfigurationBuilder {
 
         ChromeOptions options = configuration.getChromeOptions();
 
-        options.setBinary(webbrowserExecutable.getAbsolutePath());
-        configuration.getWebbrowserExecutableCallback().workOnExecutable(webbrowserExecutable.toPath());
+        // when having to use locally installed browser, do not set exe-property, as chromedriver has its own detection routine
+        if( !configuration.isUseLocalBrowserInstallation() ){
+            options.setBinary(webbrowserExecutable.getAbsolutePath());
+            configuration.getWebbrowserExecutableCallback().workOnExecutable(webbrowserExecutable.toPath());
+        }
 
         ChromeDriverService createDefaultService = ChromeDriverService.createDefaultService();
         return new ChromeDriver(createDefaultService, options);

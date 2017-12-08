@@ -52,6 +52,9 @@ public final class Cr24Configuration {
 
     private boolean use64bit = true;
 
+    // chromedriver has its own detection-routine for locally installed binary
+    private boolean useLocalBrowserInstallation = false;
+
     private StringValueCallback os = () -> "win";
 
     private StringValueCallback webdriverVersionCallback = () -> "2.33";
@@ -103,6 +106,14 @@ public final class Cr24Configuration {
 
     public void set64bit(boolean use64bit) {
         this.use64bit = use64bit;
+    }
+
+    public boolean isUseLocalBrowserInstallation() {
+        return useLocalBrowserInstallation;
+    }
+
+    public void setUseLocalBrowserInstallation(boolean useLocalBrowserInstallation) {
+        this.useLocalBrowserInstallation = useLocalBrowserInstallation;
     }
 
     public boolean isExistingSystemPropertyToBeRespected() {
@@ -394,6 +405,7 @@ public final class Cr24Configuration {
         cr24Configuration.readTimeout = this.readTimeout;
 
         cr24Configuration.use64bit = this.use64bit;
+        cr24Configuration.useLocalBrowserInstallation = this.useLocalBrowserInstallation;
 
         cr24Configuration.webdriverVersionCallback = this.webdriverVersionCallback;
         cr24Configuration.webbrowserSnapshotVersionCallback = this.webbrowserSnapshotVersionCallback;
@@ -405,7 +417,13 @@ public final class Cr24Configuration {
         cr24Configuration.webbrowserDownloadCachePathCallback = this.webbrowserDownloadCachePathCallback;
         cr24Configuration.webdriverExecutableCallback = this.webdriverExecutableCallback;
         cr24Configuration.webbrowserExecutableCallback = this.webbrowserExecutableCallback;
-        
+
+        cr24Configuration.webdriverExecutableFilename = this.webdriverExecutableFilename;
+        cr24Configuration.webbrowserExecutableFilename = this.webbrowserExecutableFilename;
+
+        cr24Configuration.webdriverArchiveFoldernameOfExecutable = this.webdriverArchiveFoldernameOfExecutable;
+        cr24Configuration.webbrowserArchiveFoldernameOfExecutable = this.webbrowserArchiveFoldernameOfExecutable;
+
         cr24Configuration.os = this.os;
 
         cr24Configuration.chromeOptions = this.chromeOptions;
