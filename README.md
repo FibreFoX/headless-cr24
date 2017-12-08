@@ -29,7 +29,7 @@ How to use?
         <dependency>
             <groupId>de.dynamicfiles.projects.testing</groupId>
             <artifactId>headless-cr24</artifactId>
-            <version>1.0.0</version>
+            <version>1.2.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -44,7 +44,7 @@ apply plugin: 'java'
 
 dependencies {
     // ... other dependencies ...
-    testCompile 'de.dynamicfiles.projects.testing:headless-cr24:1.0.0'
+    testCompile 'de.dynamicfiles.projects.testing:headless-cr24:1.2.0'
 }
 ```
 
