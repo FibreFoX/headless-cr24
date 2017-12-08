@@ -91,8 +91,14 @@ public class Cr24ConfigurationBuilder {
         }
 
         // fail if any attempt failed
-        if( webdriverExecutable == null || webbrowserExecutable == null ){
-            throw new Cr24ConfigurationBuilderException("Not all executables are existing");
+        if( configuration.isUseLocalBrowserInstallation() ){
+            if( webdriverExecutable == null ){
+                throw new Cr24ConfigurationBuilderException("Webdriver executable does not exist");
+            }
+        } else {
+            if( webdriverExecutable == null || webbrowserExecutable == null ){
+                throw new Cr24ConfigurationBuilderException("Not all executables are existing");
+            }
         }
 
         if( configuration.isExistingSystemPropertyToBeRespected() ){
